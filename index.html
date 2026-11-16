@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApoyoFamilias | Portal de Ayudas, Calculadora y Servicios de Discapacidad</title>
+  <meta name="description" content="Portal integral y accesible para familias con discapacidad: buscador de ayudas públicas, simulador de cuantías económicas, servicios interdisciplinares y soporte directo.">
+  
+  <!-- Google Fonts: Inter & Lexend (alta legibilidad) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="font-normal theme-default">
+  
+  <!-- Enlace accesible para saltar al contenido -->
+  <a href="#contenido-principal" class="skip-link">Saltar al contenido principal</a>
+
+  <!-- BARRA DE ACCESIBILIDAD AVANZADA (A11Y) -->
+  <aside class="a11y-bar" aria-label="Herramientas de accesibilidad y soporte">
+    <div class="container a11y-container">
+      <div class="a11y-group">
+        <span class="a11y-label"><i data-lucide="eye"></i> Accesibilidad:</span>
+        <button id="btn-font-decrease" class="a11y-btn" title="Reducir tamaño del texto" aria-label="Reducir texto">A-</button>
+        <button id="btn-font-normal" class="a11y-btn" title="Tamaño de texto normal" aria-label="Texto normal">A</button>
+        <button id="btn-font-increase" class="a11y-btn" title="Aumentar tamaño del texto" aria-label="Aumentar texto">A+</button>
+        <button id="btn-high-contrast" class="a11y-btn" title="Alternar modo de alto contraste" aria-label="Alto Contraste">
+          <i data-lucide="contrast"></i> <span>Alto Contraste</span>
+        </button>
+        <button id="btn-dyslexic-font" class="a11y-btn" title="Tipografía para lectura facilitada" aria-label="Fuente Clara">
+          <i data-lucide="type"></i> <span>Fuente Clara</span>
+        </button>
+        <button id="btn-lectura-facil" class="a11y-btn" title="Activar modo de texto sencillo en Lectura Fácil" aria-label="Lectura Fácil">
+          <i data-lucide="book-open"></i> <span>Lectura Fácil</span>
+        </button>
+        <button id="btn-audio-reader" class="a11y-btn" title="Escuchar el contenido de la página con voz" aria-label="Escuchar con voz">
+          <i data-lucide="volume-2"></i> <span id="audio-reader-label">Escuchar</span>
+        </button>
+      </div>
+
+      <div class="a11y-emergency">
+        <div class="regional-selector-box">
+          <label for="ccaa-quick-select" class="sr-only">Selecciona tu Comunidad Autónoma:</label>
+          <i data-lucide="map-pin"></i>
+          <select id="ccaa-quick-select" class="ccaa-select" aria-label="Seleccionar Comunidad Autónoma">
+            <option value="otra">📍 Toda España (Línea Nacional)</option>
+            <option value="andalucia">Andalucía</option>
+            <option value="madrid">Comunidad de Madrid</option>
+            <option value="cataluna">Cataluña</option>
+            <option value="valencia">Comunitat Valenciana</option>
+            <option value="galicia">Galicia</option>
+          </select>
+        </div>
+        <a href="tel:900100200" id="top-emergency-phone" class="emergency-link" title="Teléfono gratuito de atención a familias">
+          <i data-lucide="phone-call"></i> <strong id="top-phone-label">900 100 200</strong>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- NAVEGACIÓN PRINCIPAL -->
+  <header class="main-header" role="banner">
+    <div class="container header-container">
+      <a href="#" class="logo-area" aria-label="Ir al inicio de ApoyoFamilias">
+        <div class="logo-icon"><i data-lucide="heart-handshake"></i></div>
+        <div class="logo-text">
+          <span class="logo-title">Apoyo<strong>Familias</strong></span>
+          <span class="logo-sub">Portal de Discapacidad y Dependencia</span>
+        </div>
+      </a>
+
+      <button id="mobile-menu-toggle" class="mobile-menu-btn" aria-expanded="false" aria-controls="nav-menu" aria-label="Abrir menú de navegación">
+        <i data-lucide="menu"></i>
+      </button>
+
+      <nav id="nav-menu" class="main-nav" role="navigation" aria-label="Navegación principal">
+        <ul class="nav-links">
+          <li><a href="#orientador" class="nav-link"><i data-lucide="compass"></i> Orientador</a></li>
+          <li><a href="#ayudas" class="nav-link"><i data-lucide="folder-search"></i> Ayudas</a></li>
+          <li><a href="#calculadora" class="nav-link nav-highlight"><i data-lucide="calculator"></i> Calculadora</a></li>
+          <li><a href="#servicios" class="nav-link"><i data-lucide="hand-heart"></i> Servicios</a></li>
+          <li><a href="#contacto" class="nav-link"><i data-lucide="phone"></i> Contacto</a></li>
+          <li>
+            <button id="btn-open-saved" class="nav-btn btn-saved" aria-label="Ver mis ayudas guardadas">
+              <i data-lucide="bookmark"></i> Guardadas (<span id="saved-counter">0</span>)
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main id="contenido-principal">
+    
+    <!-- BANNER DINÁMICO DE COMUNIDAD AUTÓNOMA -->
+    <div id="regional-banner" class="regional-info-bar" style="display:none;" role="region" aria-label="Información autonómica">
+      <div class="container regional-banner-flex">
+        <div>
+          <i data-lucide="info"></i>
+          <span>Mostrando información adaptada a: <strong id="reg-name">Comunidad de Madrid</strong>. Organismo gestor: <span id="reg-organism">Consejería de Políticas Sociales</span></span>
+        </div>
+        <a href="tel:900100200" id="reg-call-btn" class="reg-phone-badge">Llamar: <strong id="reg-phone-val">900 44 45 55</strong></a>
+      </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <div class="badge-pill">
+            <i data-lucide="shield-check"></i> Asesoramiento Gratuito, Confidencial y Humano
+          </div>
+          <h1 id="hero-title">Te acompañamos a encontrar <span>las ayudas y servicios</span> para tu familia</h1>
+          
+          <p class="hero-desc">
+            Cuidar de una persona con discapacidad implica resolver trámites complejos y cuidar la estabilidad del hogar. Te guiamos con las prestaciones económicas de dependencia, deducciones fiscales, adaptación de vivienda y respiro familiar.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#calculadora" class="btn btn-accent btn-lg">
+              <i data-lucide="calculator"></i> Calcular Mi Ahorro y Ayudas
+            </a>
+            <a href="#orientador" class="btn btn-primary btn-lg">
+              <i data-lucide="sparkles"></i> Asistente Rápido en 3 Pasos
+            </a>
+            <a href="#contacto" class="btn btn-outline btn-lg">
+              <i data-lucide="calendar"></i> Pedir Cita Gratuita
+            </a>
+          </div>
+          
+          <div class="hero-highlights">
+            <div class="highlight-item">
+              <i data-lucide="check-circle-2"></i>
+              <span>+45 Prestaciones estatales y autonómicas</span>
+            </div>
+            <div class="highlight-item">
+              <i data-lucide="calculator"></i>
+              <span>Simulador económico en tiempo real</span>
+            </div>
+            <div class="highlight-item">
+              <i data-lucide="volume-2"></i>
+              <span>Lector de voz y modo Lectura Fácil</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-card-side">
+          <div class="quick-callout-card">
+            <div class="card-header-badge">
+              <i data-lucide="zap"></i> Trámites Más Consultados
+            </div>
+            <h3>Acceso Inmediato por Necesidad:</h3>
+            <ul class="quick-topics-list">
+              <li>
+                <a href="#ayudas" class="quick-topic-link" data-filter-disability="todas" data-filter-category="economica">
+                  <i data-lucide="banknote"></i>
+                  <div>
+                    <strong>Ley de Dependencia (PECEF)</strong>
+                    <small>Hasta 455 €/mes para cuidadores familiares y cotización SS</small>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#ayudas" class="quick-topic-link" data-filter-disability="todas" data-filter-category="fiscal">
+                  <i data-lucide="receipt"></i>
+                  <div>
+                    <strong>Deducción IRPF (Hacienda)</strong>
+                    <small>1.200 € o 2.400 € al año por hijo o familiar a cargo</small>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#ayudas" class="quick-topic-link" data-filter-disability="fisica" data-filter-category="movilidad">
+                  <i data-lucide="accessibility"></i>
+                  <div>
+                    <strong>Obras de Accesibilidad en Hogar</strong>
+                    <small>Hasta 15.000 € a fondo perdido para duchas y salvaescaleras</small>
+                  </div>
+                </a>
+              </li>
+            </ul>
+            <div class="quick-card-footer">
+              <a href="https://wa.me/34600000000" target="_blank" rel="noopener" class="whatsapp-quick-btn">
+                <i data-lucide="message-circle"></i> Escribir consulta directa por WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NUEVA SECCIÓN: CALCULADORA Y SIMULADOR DE CUANTÍAS ECONÓMICAS -->
+    <section id="calculadora" class="calculator-section" aria-labelledby="calc-title">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="badge-pill light"><i data-lucide="calculator"></i> Simulador Financiero</div>
+          <h2 id="calc-title">Calculadora de Ayudas y Beneficios para Tu Familia</h2>
+          <p class="section-subtitle">Indica tu situación familiar y calcula en tiempo real una estimación del importe anual de prestaciones, deducciones fiscales y ahorros en suministros.</p>
+        </div>
+
+        <div class="calculator-wrapper">
+          <!-- Columna Izquierda: Formulario de Cálculo -->
+          <div class="calc-inputs-card">
+            <h3><i data-lucide="sliders"></i> 1. Tu Situación Familiar</h3>
+
+            <div class="calc-group">
+              <label for="calc-grado-disc" class="calc-label">Grado de Discapacidad de la persona:</label>
+              <select id="calc-grado-disc" class="form-select">
+                <option value="0">Sin certificado reconocido / Menor a 33%</option>
+                <option value="33" selected>Entre 33% y 64%</option>
+                <option value="65">65% o superior</option>
+              </select>
+            </div>
+
+            <div class="calc-group">
+              <label for="calc-grado-dep" class="calc-label">Grado de Dependencia (Ley de Dependencia):</label>
+              <select id="calc-grado-dep" class="form-select">
+                <option value="0">Sin valorar / Sin grado de dependencia</option>
+                <option value="1">Grado I (Dependencia moderada)</option>
+                <option value="2" selected>Grado II (Dependencia severa)</option>
+                <option value="3">Grado III (Gran dependencia)</option>
+              </select>
+            </div>
+
+            <div class="calc-group">
+              <label class="calc-label">Situaciones adicionales aplicables:</label>
+              <div class="calc-checkbox-list">
+                <label class="calc-check-item">
+                  <input type="checkbox" id="calc-convivencia" checked>
+                  <span>La persona convive en el hogar y es atendida por un familiar</span>
+                </label>
+                <label class="calc-check-item">
+                  <input type="checkbox" id="calc-hijos-escolar" checked>
+                  <span>Hay un hijo/a escolarizado con apoyo específico (NEAE)</span>
+                </label>
+                <label class="calc-check-item">
+                  <input type="checkbox" id="calc-vehiculo" checked>
+                  <span>La familia dispone de vehículo propio habitual</span>
+                </label>
+                <label class="calc-check-item">
+                  <input type="checkbox" id="calc-reforma">
+                  <span>Necesidad de adaptación urgente de baño / accesibilidad</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna Derecha: Resultado Estimado Dinámico -->
+          <div class="calc-results-card">
+            <div class="calc-results-header">
+              <span class="calc-sub-label">Ahorro y Apoyo Económico Anual Estimado:</span>
+              <div class="calc-total-amount" id="calc-total-display">0 € / año</div>
+              <span class="calc-monthly-label" id="calc-monthly-display">Aprox. 0 € al mes</span>
+            </div>
+
+            <div class="calc-breakdown">
+              <h4>Desglose orientativo:</h4>
+              <ul class="breakdown-list">
+                <li id="item-dep">
+                  <span><i data-lucide="heart-handshake"></i> Prestación por Dependencia (PECEF):</span>
+                  <strong id="val-dep">0 €/año</strong>
+                </li>
+                <li id="item-irpf">
+                  <span><i data-lucide="receipt"></i> Deducción IRPF por familiar a cargo:</span>
+                  <strong id="val-irpf">0 €/año</strong>
+                </li>
+                <li id="item-neae">
+                  <span><i data-lucide="graduation-cap"></i> Becas y Subsidios Educación NEAE:</span>
+                  <strong id="val-neae">0 €/año</strong>
+                </li>
+                <li id="item-coche">
+                  <span><i data-lucide="car"></i> Ahorro Impuesto de Circulación y Parking:</span>
+                  <strong id="val-coche">0 €/año</strong>
+                </li>
+                <li id="item-bono">
+                  <span><i data-lucide="zap"></i> Descuento Bono Social Eléctrico/Térmico:</span>
+                  <strong id="val-bono">0 €/año</strong>
+                </li>
+                <li id="item-reforma" style="display:none;">
+                  <span><i data-lucide="home"></i> Subvención Adaptación de Vivienda:</span>
+                  <strong id="val-reforma">0 € (Única vez)</strong>
+                </li>
+              </ul>
+            </div>
+
+            <div class="calc-cta-box">
+              <button type="button" class="btn btn-primary btn-block" id="btn-solicitar-calculo">
+                <i data-lucide="file-check"></i> Solicitar Asesoramiento para este Pack
+              </button>
+              <button type="button" class="btn btn-outline btn-block" id="btn-print-checklist">
+                <i data-lucide="printer"></i> Imprimir Informe y Documentación Necesaria
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WIZARD ORIENTADOR INTERACTIVO -->
+    <section id="orientador" class="wizard-section" aria-labelledby="wizard-title">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="badge-pill light">Asistente Inteligente</div>
+          <h2 id="wizard-title">Orientador Rápido de Ayudas</h2>
+          <p class="section-subtitle">Responde 3 preguntas sencillas y filtraremos automáticamente los subsidios y servicios específicos para tu situación.</p>
+        </div>
+
+        <div class="wizard-box" id="wizard-container">
+          <div class="wizard-steps-indicator" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3">
+            <div class="step-indicator active" data-step="1">1. Tipo de Discapacidad</div>
+            <div class="step-indicator" data-step="2">2. Grado de Discapacidad</div>
+            <div class="step-indicator" data-step="3">3. Mayor Necesidad Hoy</div>
+          </div>
+
+          <!-- Paso 1 -->
+          <div class="wizard-step active" id="step-1">
+            <h3 class="step-question">¿Qué tipo de discapacidad o condición tiene la persona?</h3>
+            <div class="wizard-options-grid">
+              <button type="button" class="wizard-choice-btn" data-value="fisica">
+                <i data-lucide="accessibility"></i>
+                <span class="choice-title">Física o Motora</span>
+                <span class="choice-desc">Movilidad reducida, parálisis, amputaciones, espina bífida</span>
+              </button>
+              <button type="button" class="wizard-choice-btn" data-value="intelectual">
+                <i data-lucide="brain"></i>
+                <span class="choice-title">Intelectual o TEA</span>
+                <span class="choice-desc">Síndrome de Down, Autismo, retraso madurativo</span>
+              </button>
+              <button type="button" class="wizard-choice-btn" data-value="sensorial">
+                <i data-lucide="eye-off"></i>
+                <span class="choice-title">Sensorial (Visual / Auditiva)</span>
+                <span class="choice-desc">Ceguera, baja visión, sordera, hipoacusia</span>
+              </button>
+              <button type="button" class="wizard-choice-btn" data-value="mental">
+                <i data-lucide="smile"></i>
+                <span class="choice-title">Psicosocial / Salud Mental</span>
+                <span class="choice-desc">Trastorno bipolar, esquizofrenia, depresión mayor crónica</span>
+              </button>
+              <button type="button" class="wizard-choice-btn" data-value="organica">
+                <i data-lucide="activity"></i>
+                <span class="choice-title">Orgánica o Enfermedad Rara</span>
+                <span class="choice-desc">Fibrosis quística, insuficiencia renal, lupus, ELA</span>
+              </button>
+              <button type="button" class="wizard-choice-btn" data-value="todas">
+                <i data-lucide="sparkles"></i>
+                <span class="choice-title">Múltiple / No lo sé seguro</span>
+                <span class="choice-desc">Quiero explorar todas las opciones disponibles</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Paso 2 -->
+          <div class="wizard-step" id="step-2" style="display: none;">
+            <h3 class="step-question">¿Cuenta con certificado de discapacidad o grado reconocido?</h3>
+            <div class="wizard-options-grid">
+              <button type="button" class="wizard-choice-btn" data-value="sin_reconocer">
+                <i data-lucide="clock"></i>
+                <span class="choice-title">Aún no reconocido / En trámite</span>
+                <span class="choice-desc">Necesitamos ayuda para solicitar la primera valoración</span>
+              </button>
+              <button type="button" class="wizard-choice-btn" data-value="33">
+                <i data-lucide="percent"></i>
+                <span class="choice-title">Entre 33% y 64%</span>
+                <span class="choice-desc">Acceso a deducciones fiscales, becas y beneficios laborales</span>
+              </button>
+              <button type="button" class="wizard-choice-btn" data-value="65">
+                <i data-lucide="award"></i>
+                <span class="choice-title">65% o más</span>
+                <span class="choice-desc">Pensiones no contributivas, mayor desgravación y exenciones</span>
+              </button>
+              <button type="button" class="wizard-choice-btn" data-value="dependencia">
+                <i data-lucide="shield-alert"></i>
+                <span class="choice-title">Gran Dependencia / Ayuda 3ª persona</span>
+                <span class="choice-desc">75% o más o baremo de dependencia Grado II o III</span>
+              </button>
+            </div>
+            <div class="wizard-nav-btns">
+              <button type="button" class="btn btn-outline" id="wizard-prev-2">Atrás</button>
+            </div>
+          </div>
+
+          <!-- Paso 3 -->
+          <div class="wizard-step" id="step-3" style="display: none;">
+            <h3 class="step-question">¿Cuál es la principal prioridad de apoyo que buscas hoy?</h3>
+            <div class="wizard-options-grid">
+              <button type="button" class="wizard-choice-btn" data-value="economica">
+                <i data-lucide="wallet"></i>
+                <span class="choice-title">Apoyo Económico</span>
+                <span class="choice-desc">Subsidios, deducción IRPF, bono social, prestaciones</span>
+              </button>
+              <button type="button" class="wizard-choice-btn" data-value="movilidad">
+                <i data-lucide="home"></i>
+                <span class="choice-title">Vivienda, Obras y Vehículo</span>
+                <span class="choice-desc">Ascensores, rampas, adaptación de baño, tarjeta aparcamiento</span>
+              </button>
+              <button type="button" class="wizard-choice-btn" data-value="educacion">
+                <i data-lucide="graduation-cap"></i>
+                <span class="choice-title">Educación y Terapias</span>
+                <span class="choice-desc">Becas NEAE, logopedia, estimulación precoz, apoyo escolar</span>
+              </button>
+              <button type="button" class="wizard-choice-btn" data-value="respiro">
+                <i data-lucide="heart"></i>
+                <span class="choice-title">Descanso para Cuidadores</span>
+                <span class="choice-desc">Respiro familiar, centro de día, cuidadores a domicilio</span>
+              </button>
+            </div>
+            <div class="wizard-nav-btns">
+              <button type="button" class="btn btn-outline" id="wizard-prev-3">Atrás</button>
+            </div>
+          </div>
+
+          <!-- Resultado Wizard -->
+          <div class="wizard-result" id="wizard-result" style="display: none;">
+            <div class="result-banner">
+              <i data-lucide="check-circle" class="success-icon"></i>
+              <div>
+                <h3>¡Hemos preparado tus ayudas recomendadas!</h3>
+                <p id="wizard-summary-text">Filtros aplicados según tus respuestas.</p>
+              </div>
+            </div>
+            <div class="result-actions">
+              <a href="#ayudas" class="btn btn-primary" id="wizard-go-results">Ver Ayudas Encontradas</a>
+              <button type="button" class="btn btn-outline" id="wizard-reset">Reiniciar Asistente</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CATÁLOGO DE AYUDAS DEPENDIENDO DE LA DISCAPACIDAD -->
+    <section id="ayudas" class="ayudas-section" aria-labelledby="ayudas-title">
+      <div class="container">
+        <div class="section-header">
+          <div class="badge-pill">Catálogo Completo</div>
+          <h2 id="ayudas-title">Ayudas y Prestaciones según Discapacidad y Necesidad</h2>
+          <p class="section-subtitle">Filtra por colectivo o utiliza el buscador para acceder a las fichas completas con requisitos y documentación oficial.</p>
+        </div>
+
+        <!-- Filtros interactivos -->
+        <div class="filters-panel" role="region" aria-label="Filtros de búsqueda de ayudas">
+          <div class="filter-row">
+            <div class="filter-group">
+              <label for="filter-disability-select"><i data-lucide="filter"></i> Tipo de Discapacidad:</label>
+              <select id="filter-disability-select" class="form-select">
+                <option value="todas">Todas las discapacidades</option>
+                <option value="fisica">Física o Motora</option>
+                <option value="intelectual">Intelectual o TEA</option>
+                <option value="sensorial">Sensorial (Visual y Auditiva)</option>
+                <option value="mental">Psicosocial / Salud Mental</option>
+                <option value="organica">Orgánica / Enf. Crónicas y Raras</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="filter-category-select"><i data-lucide="layers"></i> Tipo de Ayuda:</label>
+              <select id="filter-category-select" class="form-select">
+                <option value="todas">Todas las categorías</option>
+                <option value="economica">Económicas y Subsidios</option>
+                <option value="fiscal">Beneficios Fiscales (IRPF, Impuestos)</option>
+                <option value="movilidad">Movilidad y Adaptación de Hogar</option>
+                <option value="educacion">Educación, Becas y Terapias</option>
+                <option value="empleo">Empleo y Formación</option>
+              </select>
+            </div>
+
+            <div class="filter-group search-group">
+              <label for="search-input"><i data-lucide="search"></i> Buscar por palabra clave:</label>
+              <div class="search-input-wrapper">
+                <input type="text" id="search-input" placeholder="Ej: Ley dependencia, IRPF, silla de ruedas, beca..." class="form-input">
+                <button type="button" id="clear-search" class="clear-btn" title="Limpiar búsqueda" aria-label="Limpiar búsqueda">&times;</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tags rápidos de discapacidad -->
+          <div class="filter-pills" role="group" aria-label="Filtro rápido por tipo de discapacidad">
+            <span class="pills-label">Acceso directo:</span>
+            <button class="pill-btn active" data-pill-disability="todas">Todas</button>
+            <button class="pill-btn" data-pill-disability="fisica">Física / Motora</button>
+            <button class="pill-btn" data-pill-disability="intelectual">Intelectual / TEA</button>
+            <button class="pill-btn" data-pill-disability="sensorial">Sensorial</button>
+            <button class="pill-btn" data-pill-disability="mental">Salud Mental</button>
+            <button class="pill-btn" data-pill-disability="organica">Orgánica / Raras</button>
+          </div>
+        </div>
+
+        <!-- Contador de resultados y modo lectura fácil indicador -->
+        <div class="results-meta">
+          <p id="results-counter" aria-live="polite">Mostrando <strong id="count-number">0</strong> ayudas disponibles</p>
+          <div class="results-meta-actions">
+            <button id="reset-all-filters" class="link-btn" style="display:none;">Restablecer filtros</button>
+          </div>
+        </div>
+
+        <!-- Grid de Tarjetas de Ayudas -->
+        <div class="cards-grid" id="ayudas-cards-container" aria-live="polite">
+          <!-- Las tarjetas se generan dinámicamente con JavaScript desde data.js -->
+        </div>
+
+        <div id="no-results-msg" class="no-results" style="display:none;">
+          <i data-lucide="search-x"></i>
+          <h3>No encontramos ayudas con esos filtros exactos</h3>
+          <p>Prueba seleccionando "Todas las discapacidades" o pregúntanos directamente para un estudio particular.</p>
+          <a href="#contacto" class="btn btn-primary">Pedir Asesoría Directa</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICIOS QUE PODEMOS OFRECER A LAS FAMILIAS -->
+    <section id="servicios" class="servicios-section" aria-labelledby="servicios-title">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="badge-pill">Nuestros Servicios</div>
+          <h2 id="servicios-title">Servicios Integrales para Familias y Cuidadores</h2>
+          <p class="section-subtitle">No estás solo en este camino. Te ofrecemos acompañamiento profesional interdisciplinar para cubrir todas las áreas de la vida familiar.</p>
+        </div>
+
+        <div class="services-grid">
+          
+          <!-- Servicio 1: Asesoría Legal y Burocrática -->
+          <article class="service-card">
+            <div class="service-icon-box color-blue">
+              <i data-lucide="scale"></i>
+            </div>
+            <h3>Asesoría Legal y Trámites</h3>
+            <p>Te gestionamos de principio a fin los trámites administrativos más complejos para que no pierdas tiempo ni oportunidades.</p>
+            <ul class="service-check-list">
+              <li><i data-lucide="check"></i> Tramitación y reclamación del Grado de Discapacidad</li>
+              <li><i data-lucide="check"></i> Solicitud de la Ley de Dependencia (Grados I, II y III)</li>
+              <li><i data-lucide="check"></i> Medidas judiciales de apoyo a la capacidad jurídica (curatela)</li>
+              <li><i data-lucide="check"></i> Recursos contra denegaciones de la administración</li>
+            </ul>
+            <button class="btn btn-outline-primary service-cta-btn" data-service-name="Asesoría Legal y Trámites">
+              Solicitar información legal
+            </button>
+          </article>
+
+          <!-- Servicio 2: Programa de Respiro Familiar -->
+          <article class="service-card featured-service">
+            <div class="card-tag">Muy Solicitado</div>
+            <div class="service-icon-box color-teal">
+              <i data-lucide="coffee"></i>
+            </div>
+            <h3>Programa de Respiro Familiar</h3>
+            <p>Cuidar al cuidador es fundamental. Ofrecemos alternativas de apoyo temporal para que las familias tengan tiempo de descanso y autocuidado.</p>
+            <ul class="service-check-list">
+              <li><i data-lucide="check"></i> Asistentes personales y cuidadores cualificados por horas</li>
+              <li><i data-lucide="check"></i> Actividades de ocio inclusivo de fin de semana</li>
+              <li><i data-lucide="check"></i> Campamentos adaptados en periodos vacacionales</li>
+              <li><i data-lucide="check"></i> Cobertura de emergencias familiares 24/7</li>
+            </ul>
+            <button class="btn btn-primary service-cta-btn" data-service-name="Programa de Respiro Familiar">
+              Solicitar plaza o asistente
+            </button>
+          </article>
+
+          <!-- Servicio 3: Terapias y Rehabilitación a Domicilio -->
+          <article class="service-card">
+            <div class="service-icon-box color-purple">
+              <i data-lucide="stethoscope"></i>
+            </div>
+            <h3>Terapias y Rehabilitación</h3>
+            <p>Equipo multidisciplinar especializado en neurorehabilitación, estimulación y autonomía en tu domicilio o centros asociados.</p>
+            <ul class="service-check-list">
+              <li><i data-lucide="check"></i> Fisioterapia motora y neurológica</li>
+              <li><i data-lucide="check"></i> Terapia Ocupacional para actividades de la vida diaria</li>
+              <li><i data-lucide="check"></i> Logopedia y comunicación aumentativa/alternativa (CAA)</li>
+              <li><i data-lucide="check"></i> Estimulación cognitiva temprana e infantil</li>
+            </ul>
+            <button class="btn btn-outline-primary service-cta-btn" data-service-name="Terapias y Rehabilitación">
+              Pedir valoración terapéutica
+            </button>
+          </article>
+
+          <!-- Servicio 4: Apoyo Psicológico y Emocional -->
+          <article class="service-card">
+            <div class="service-icon-box color-orange">
+              <i data-lucide="heart-pulse"></i>
+            </div>
+            <h3>Atención Psicológica Familiar</h3>
+            <p>Espacios seguros para procesar diagnósticos, prevenir el síndrome del cuidador quemado y fortalecer los vínculos en el hogar.</p>
+            <ul class="service-check-list">
+              <li><i data-lucide="check"></i> Terapia individual para cuidadores principales</li>
+              <li><i data-lucide="check"></i> Grupos de Ayuda Mutua (GAM) entre familias</li>
+              <li><i data-lucide="check"></i> Acompañamiento a hermanos de personas con discapacidad</li>
+              <li><i data-lucide="check"></i> Talleres de gestión del duelo, estrés y ansiedad</li>
+            </ul>
+            <button class="btn btn-outline-primary service-cta-btn" data-service-name="Atención Psicológica Familiar">
+              Hablar con un psicólogo
+            </button>
+          </article>
+
+          <!-- Servicio 5: Accesibilidad y Adaptación del Hogar -->
+          <article class="service-card">
+            <div class="service-icon-box color-green">
+              <i data-lucide="home"></i>
+            </div>
+            <h3>Accesibilidad y Obras en Hogar</h3>
+            <p>Evaluamos tu vivienda y te asesoramos técnicamente para eliminar barreras arquitectónicas con subvenciones públicas del 100%.</p>
+            <ul class="service-check-list">
+              <li><i data-lucide="check"></i> Adaptación de baños (plato de ducha, asideros, grúas)</li>
+              <li><i data-lucide="check"></i> Rampas, salvaescaleras y ampliación de puertas</li>
+              <li><i data-lucide="check"></i> Domótica y control por voz adaptado a discapacidad motora</li>
+              <li><i data-lucide="check"></i> Tramitación de subvenciones de accesibilidad comunitaria</li>
+            </ul>
+            <button class="btn btn-outline-primary service-cta-btn" data-service-name="Accesibilidad y Adaptación">
+              Solicitar estudio de vivienda
+            </button>
+          </article>
+
+          <!-- Servicio 6: Orientación Escolar y Empleo Inclusivo -->
+          <article class="service-card">
+            <div class="service-icon-box color-rose">
+              <i data-lucide="briefcase"></i>
+            </div>
+            <h3>Inclusión Educativa y Laboral</h3>
+            <p>Defendemos el derecho a una educación inclusiva y abrimos puertas hacia la inserción laboral y centros especiales de empleo.</p>
+            <ul class="service-check-list">
+              <li><i data-lucide="check"></i> Mediación con colegios para dictamen de escolarización</li>
+              <li><i data-lucide="check"></i> Solicitud de Becas del Ministerio para alumnado NEAE</li>
+              <li><i data-lucide="check"></i> Itinerarios personalizados de inserción laboral con apoyo</li>
+              <li><i data-lucide="check"></i> Asesoramiento sobre cuota de reserva del 2% en empresas</li>
+            </ul>
+            <button class="btn btn-outline-primary service-cta-btn" data-service-name="Inclusión Educativa y Laboral">
+              Consultar orientación formativa
+            </button>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIOS Y EXPERIENCIAS -->
+    <section id="testimonios" class="testimonios-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="badge-pill light">Historias Reales</div>
+          <h2>La tranquilidad de sentirse respaldado</h2>
+          <p class="section-subtitle">Familias que han logrado mejorar la calidad de vida de sus seres queridos con nuestro apoyo.</p>
+        </div>
+
+        <div class="testimonials-grid">
+          <blockquote class="testimonial-card">
+            <div class="rating"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+            <p class="testimonio-text">"Llevábamos casi dos años atascados con el reconocimiento de dependencia para mi madre con Alzheimer. En menos de tres meses nos consiguieron la prestación económica y un asistente personal. Nos devolvieron la vida."</p>
+            <footer class="testimonio-author">
+              <div class="avatar">MG</div>
+              <div>
+                <strong>María y Carlos Gómez</strong>
+                <span>Cuidadores familiares (Madrid)</span>
+              </div>
+            </footer>
+          </blockquote>
+
+          <blockquote class="testimonial-card">
+            <div class="rating"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+            <p class="testimonio-text">"Cuando diagnosticaron a Lucas de autismo nos sentimos completamente perdidos. El equipo nos orientó con las becas NEAE, los centros de atención temprana y el servicio de respiro que nos permite respirar los fines de semana."</p>
+            <footer class="testimonio-author">
+              <div class="avatar">DR</div>
+              <div>
+                <strong>David Romero</strong>
+                <span>Padre de niño con TEA (Sevilla)</span>
+              </div>
+            </footer>
+          </blockquote>
+
+          <blockquote class="testimonial-card">
+            <div class="rating"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+            <p class="testimonio-text">"Tras un accidente que me dejó en silla de ruedas, me tramitaron la ayuda para reformar el baño y la tarjeta de estacionamiento reservado. Trato humano inmejorable y máxima cercanía."</p>
+            <footer class="testimonio-author">
+              <div class="avatar">EP</div>
+              <div>
+                <strong>Elena Pascual</strong>
+                <span>Usuaria con discapacidad motora (Valencia)</span>
+              </div>
+            </footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- CANALES Y MÉTODOS DE CONTACTO (CENTRAL) -->
+    <section id="contacto" class="contacto-section" aria-labelledby="contacto-title">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="badge-pill">Estamos Contigo</div>
+          <h2 id="contacto-title">Canales y Métodos de Contacto</h2>
+          <p class="section-subtitle">Elige la vía más cómoda y accesible para ti. Respondemos todas las solicitudes en menos de 24 horas laborables.</p>
+        </div>
+
+        <div class="contact-channels-grid">
+          <!-- Tarjeta 1: Teléfono Gratuito -->
+          <div class="channel-card">
+            <div class="channel-icon color-blue"><i data-lucide="phone"></i></div>
+            <h3>Llamada Gratuita</h3>
+            <p>Atención telefónica directa con trabajadoras sociales especializadas.</p>
+            <a href="tel:900100200" id="card-phone-link" class="channel-action">900 100 200</a>
+            <span class="channel-hint">Lunes a Viernes de 8:00 a 20:00 h</span>
+          </div>
+
+          <!-- Tarjeta 2: WhatsApp Inmediato -->
+          <div class="channel-card">
+            <div class="channel-icon color-teal"><i data-lucide="message-square"></i></div>
+            <h3>WhatsApp y Chat</h3>
+            <p>Escríbenos para consultas rápidas, envío de dudas o fotos de trámites.</p>
+            <a href="https://wa.me/34600000000?text=Hola,%20quisiera%20recibir%20informaci%C3%B3n%20sobre%20ayudas%20para%20mi%20familia" target="_blank" rel="noopener" class="channel-action channel-wa">
+              Chat 600 000 000
+            </a>
+            <span class="channel-hint">Atención continuada vía mensaje</span>
+          </div>
+
+          <!-- Tarjeta 3: Correo Electrónico -->
+          <div class="channel-card">
+            <div class="channel-icon color-purple"><i data-lucide="mail"></i></div>
+            <h3>Correo Electrónico</h3>
+            <p>Envíanos resoluciones, solicitudes o describe tu caso con tranquilidad.</p>
+            <a href="mailto:ayuda@apoyofamilias.org" class="channel-action">ayuda@apoyofamilias.org</a>
+            <span class="channel-hint">Respuesta detallada y por escrito</span>
+          </div>
+
+          <!-- Tarjeta 4: Cita Presencial / Videollamada -->
+          <div class="channel-card">
+            <div class="channel-icon color-orange"><i data-lucide="video"></i></div>
+            <h3>Videollamada / Presencial</h3>
+            <p>Oficinas accesibles o sesión telemática con intérprete de LSE.</p>
+            <a href="#formulario-contacto" class="channel-action">Pedir Cita Previa</a>
+            <span class="channel-hint" id="card-office-address">Sede central: C/ Solidaridad 24, Madrid</span>
+          </div>
+        </div>
+
+        <!-- FORMULARIO DE CONTACTO ACCESIBLE -->
+        <div class="form-wrapper" id="formulario-contacto">
+          <div class="form-intro">
+            <h3><i data-lucide="file-text"></i> Formulario de Orientación y Solicitud</h3>
+            <p>Completa tus datos y el área en la que necesitas soporte. Una persona de nuestro equipo se pondrá en contacto contigo de forma totalmente gratuita.</p>
+            
+            <div class="accessibility-note">
+              <i data-lucide="accessibility"></i>
+              <span>¿Necesitas adaptación por discapacidad auditiva o visual? Marca la casilla correspondiente y te contactaremos mediante <strong>videollamada con intérprete LSE</strong> o vía <strong>comunicación por texto/WhatsApp</strong>.</span>
+            </div>
+          </div>
+
+          <form id="contact-form" class="accessible-form" novalidate>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="form-nombre">Nombre y Apellidos <span class="required" aria-hidden="true">*</span></label>
+                <input type="text" id="form-nombre" name="nombre" class="form-control" required placeholder="Ej: Carmen Gómez López">
+                <span class="field-error" id="error-nombre" aria-live="polite"></span>
+              </div>
+              <div class="form-field">
+                <label for="form-telefono">Teléfono de contacto <span class="required" aria-hidden="true">*</span></label>
+                <input type="tel" id="form-telefono" name="telefono" class="form-control" required placeholder="Ej: 612 345 678">
+                <span class="field-error" id="error-telefono" aria-live="polite"></span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label for="form-email">Correo Electrónico <span class="required" aria-hidden="true">*</span></label>
+                <input type="email" id="form-email" name="email" class="form-control" required placeholder="tu-correo@ejemplo.com">
+                <span class="field-error" id="error-email" aria-live="polite"></span>
+              </div>
+              <div class="form-field">
+                <label for="form-provincia">Comunidad Autónoma / Provincia</label>
+                <input type="text" id="form-provincia" name="provincia" class="form-control" placeholder="Ej: Madrid, Andalucía, Barcelona...">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label for="form-discapacidad">Tipo de discapacidad de la persona a apoyar</label>
+                <select id="form-discapacidad" name="tipo_discapacidad" class="form-control">
+                  <option value="">Selecciona una opción...</option>
+                  <option value="fisica">Física / Motora</option>
+                  <option value="intelectual">Intelectual / Trastorno del Espectro Autista</option>
+                  <option value="sensorial_visual">Sensorial - Visual (Ceguera / Baja visión)</option>
+                  <option value="sensorial_auditiva">Sensorial - Auditiva (Sordera / Hipoacusia)</option>
+                  <option value="mental">Psicosocial / Salud Mental</option>
+                  <option value="organica">Orgánica / Enfermedades Raras</option>
+                  <option value="en_tramite">Sin diagnóstico oficial / En trámite</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label for="form-servicio-interes">Servicio o ayuda principal de interés</label>
+                <select id="form-servicio-interes" name="servicio_interes" class="form-control">
+                  <option value="orientacion_general">Orientación general sobre prestaciones</option>
+                  <option value="tramite_dependencia">Ley de Dependencia / Grado Discapacidad</option>
+                  <option value="respiro_familiar">Programa de Respiro Familiar / Cuidadores</option>
+                  <option value="adaptacion_vivienda">Accesibilidad y Reformas en el Hogar</option>
+                  <option value="terapias">Terapias (Fisio, Logopedia, Ocupacional)</option>
+                  <option value="apoyo_psicologico">Apoyo Psicológico para Cuidadores</option>
+                  <option value="educacion_becas">Becas y Educación Inclusiva</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-field full-width">
+              <label for="form-mensaje">Cuéntanos brevemente tu situación o consulta</label>
+              <textarea id="form-mensaje" name="mensaje" rows="4" class="form-control" placeholder="Indícanos si tienes dudas con algún documento, grado reconocido, si necesitas atención preferente en algún horario..."></textarea>
+            </div>
+
+            <div class="form-checkboxes">
+              <label class="checkbox-container">
+                <input type="checkbox" id="form-lse" name="requiere_lse">
+                <span class="checkmark"></span>
+                <span>Requiero atención en Lengua de Signos Española (LSE) o comunicación por texto/WhatsApp</span>
+              </label>
+
+              <label class="checkbox-container">
+                <input type="checkbox" id="form-privacidad" name="privacidad" required>
+                <span class="checkmark"></span>
+                <span>He leído y acepto la <a href="#privacidad" class="link-inline">política de confidencialidad y protección de datos</a> <span class="required">*</span></span>
+              </label>
+              <span class="field-error" id="error-privacidad" aria-live="polite"></span>
+            </div>
+
+            <div class="form-submit-row">
+              <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">
+                <i data-lucide="send"></i> Enviar Solicitud de Asesoramiento Gratuito
+              </button>
+            </div>
+
+            <div id="form-feedback-message" class="feedback-box" style="display:none;" role="alert"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREGUNTAS FRECUENTES (FAQ) -->
+    <section class="faq-section" aria-labelledby="faq-title">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="badge-pill light">Dudas Frecuentes</div>
+          <h2 id="faq-title">Preguntas Frecuentes de las Familias</h2>
+          <p class="section-subtitle">Aclaramos las dudas más habituales sobre plazos, compatibilidad y trámites.</p>
+        </div>
+
+        <div class="faq-accordion" id="faq-container">
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span>¿Qué diferencia hay entre el Certificado de Discapacidad y la Ley de Dependencia?</span>
+              <i data-lucide="chevron-down" class="faq-chevron"></i>
+            </button>
+            <div class="faq-answer">
+              <p>El <strong>Certificado de Discapacidad</strong> (porcentajes como 33%, 65%, 75%) valora las limitaciones físicas, psíquicas o sensoriales permanentes y da acceso a beneficios fiscales, empleo protegido, reducciones en transporte y adaptaciones.</p>
+              <p>La <strong>Ley de Dependencia</strong> (Grados I, II y III) evalúa la necesidad de ayuda de otra persona para las actividades básicas de la vida diaria (comer, vestirse, asearse). Da derecho a prestaciones económicas para cuidados en el entorno familiar, ayuda a domicilio o plaza en centros de día/residencias. <em>Ambos reconocimientos son complementarios y se pueden solicitar a la vez.</em></p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span>¿Las ayudas y subvenciones son compatibles entre sí?</span>
+              <i data-lucide="chevron-down" class="faq-chevron"></i>
+            </button>
+            <div class="faq-answer">
+              <p>En su gran mayoría sí. Por ejemplo, recibir la prestación de la Ley de Dependencia es plenamente compatible con las deducciones fiscales de IRPF (hasta 1.200 € o 2.400 € anuales), la tarjeta de estacionamiento, las becas educativas NEAE y las subvenciones para eliminación de barreras en la vivienda.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span>¿Cuánto tarda en resolverse una solicitud de discapacidad o dependencia?</span>
+              <i data-lucide="chevron-down" class="faq-chevron"></i>
+            </button>
+            <div class="faq-answer">
+              <p>Aunque la ley establece plazos teóricos de 3 a 6 meses, en la práctica varía según la Comunidad Autónoma, oscilando habitualmente entre 6 y 14 meses. Por ello es crucial presentar la documentación clínica completa y bien organizada desde el primer día para evitar requerimientos que retrasen el proceso. En nuestra asesoría te ayudamos a prepararlo todo con informes actualizados.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span>¿El servicio de respiro familiar tiene algún coste?</span>
+              <i data-lucide="chevron-down" class="faq-chevron"></i>
+            </button>
+            <div class="faq-answer">
+              <p>Disponemos de plazas 100% subvencionadas por fondos públicos para familias en situación de vulnerabilidad o necesidad urgente, así como modalidades cofinanciadas según renta familiar para que ninguna familia se quede sin el descanso que necesita.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- DRAWER / PANEL LATERAL DE "MIS AYUDAS GUARDADAS" -->
+  <aside id="saved-drawer" class="saved-drawer" aria-hidden="true" role="dialog" aria-labelledby="saved-drawer-title">
+    <div class="drawer-header">
+      <h3 id="saved-drawer-title"><i data-lucide="bookmark"></i> Mis Ayudas Guardadas (<span id="drawer-count">0</span>)</h3>
+      <button id="btn-close-drawer" class="drawer-close" aria-label="Cerrar panel de ayudas guardadas">&times;</button>
+    </div>
+    
+    <div class="drawer-body" id="saved-items-container">
+      <!-- Se inyectan las ayudas marcadas como favoritas -->
+      <p class="empty-saved-msg">No has guardado ninguna ayuda todavía. Haz clic en el icono del marcador de cualquier tarjeta para añadirla a tu carpeta.</p>
+    </div>
+
+    <div class="drawer-footer">
+      <button type="button" class="btn btn-primary btn-block" id="btn-solicitar-todas-guardadas">
+        <i data-lucide="send"></i> Solicitar Asesoramiento Conjunto
+      </button>
+      <button type="button" class="btn btn-outline btn-block" id="btn-imprimir-guardadas">
+        <i data-lucide="printer"></i> Imprimir Lista de Documentos
+      </button>
+    </div>
+  </aside>
+  <div id="drawer-overlay" class="drawer-overlay" style="display:none;"></div>
+
+  <!-- MODAL DE DETALLE DE AYUDA -->
+  <div id="modal-ayuda" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="modal-close" aria-label="Cerrar ventana de detalle">&times;</button>
+      <div class="modal-header-content">
+        <span class="badge-pill modal-badge" id="modal-category">Económica</span>
+        <h3 id="modal-title" class="modal-title">Título de la Ayuda</h3>
+        <p id="modal-organism" class="modal-organism">Organismo gestor</p>
+      </div>
+
+      <div class="modal-body-content">
+        <!-- Modo lectura fácil en modal -->
+        <div class="modal-easy-read-box" id="modal-easy-box" style="display:none;">
+          <div class="easy-read-title"><i data-lucide="book-open"></i> Explicación en Lectura Fácil:</div>
+          <p id="modal-easy-text"></p>
+        </div>
+
+        <div class="modal-section">
+          <h4><i data-lucide="info"></i> Descripción y Cuantía</h4>
+          <p id="modal-desc">Detalles completos de la ayuda...</p>
+        </div>
+
+        <div class="modal-section">
+          <h4><i data-lucide="check-square"></i> Requisitos Clave</h4>
+          <ul id="modal-requirements" class="bullet-list">
+            <!-- requisitos -->
+          </ul>
+        </div>
+
+        <div class="modal-section">
+          <h4><i data-lucide="file-text"></i> Documentación Necesaria</h4>
+          <ul id="modal-docs" class="bullet-list">
+            <!-- documentación -->
+          </ul>
+        </div>
+
+        <div class="modal-section modal-callout">
+          <h4><i data-lucide="help-circle"></i> ¿Quieres que te ayudemos a solicitarla?</h4>
+          <p>Nuestras trabajadoras sociales pueden revisar tus informes y presentar el expediente por ti.</p>
+          <div class="modal-callout-actions">
+            <button class="btn btn-primary" id="modal-btn-solicitar">
+              <i data-lucide="mail"></i> Solicitar Tramitación de Esta Ayuda
+            </button>
+            <button class="btn btn-outline" id="modal-btn-audio">
+              <i data-lucide="volume-2"></i> Escuchar esta ficha
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTONES FLOTANTES DE ACCIÓN RÁPIDA -->
+  <aside class="floating-actions" aria-label="Contactos flotantes rápidos">
+    <button type="button" id="float-saved-btn" class="float-btn float-saved" title="Ver mis ayudas guardadas" aria-label="Ver mis ayudas guardadas">
+      <i data-lucide="bookmark"></i>
+      <span class="float-badge" id="float-badge-count">0</span>
+      <span class="float-text">Guardadas</span>
+    </button>
+    <a href="https://wa.me/34600000000?text=Hola,%20deseo%20asesoramiento%20sobre%20ayudas%20para%20mi%20familiar" target="_blank" rel="noopener" class="float-btn float-whatsapp" title="Escríbenos por WhatsApp" aria-label="Contactar por WhatsApp">
+      <i data-lucide="message-circle"></i>
+      <span class="float-text">WhatsApp Ayuda</span>
+    </a>
+    <a href="tel:900100200" id="float-phone-btn" class="float-btn float-phone" title="Llamada gratuita 900 100 200" aria-label="Llamar gratis">
+      <i data-lucide="phone"></i>
+      <span class="float-text" id="float-phone-label">900 100 200</span>
+    </a>
+  </aside>
+
+  <!-- SECCIÓN OCULTA EXCLUSIVA PARA IMPRESIÓN (PRINT CHECKLIST) -->
+  <div id="print-checklist-area" class="print-only">
+    <h2>Dossier de Ayudas y Documentación para la Familia</h2>
+    <p>Generado en ApoyoFamilias.org | Línea Gratuita: 900 100 200</p>
+    <hr>
+    <div id="print-items-content"></div>
+  </div>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-grid">
+      <div class="footer-col brand-col">
+        <div class="logo-area">
+          <div class="logo-icon"><i data-lucide="heart-handshake"></i></div>
+          <span class="logo-title text-white">Apoyo<strong>Familias</strong></span>
+        </div>
+        <p class="footer-desc">
+          Entidad solidaria comprometida con la dignidad, accesibilidad y bienestar integral de las familias con miembros con discapacidad y dependencia.
+        </p>
+        <div class="social-links">
+          <a href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+          <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+          <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+          <a href="#" aria-label="YouTube"><i data-lucide="youtube"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Ayudas por Colectivo</h4>
+        <ul class="footer-links">
+          <li><a href="#ayudas" data-footer-disability="fisica">Discapacidad Física y Motora</a></li>
+          <li><a href="#ayudas" data-footer-disability="intelectual">Discapacidad Intelectual y TEA</a></li>
+          <li><a href="#ayudas" data-footer-disability="sensorial">Discapacidad Visual y Auditiva</a></li>
+          <li><a href="#ayudas" data-footer-disability="mental">Salud Mental y Psicosocial</a></li>
+          <li><a href="#ayudas" data-footer-disability="organica">Enfermedades Raras y Orgánicas</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Herramientas y Servicios</h4>
+        <ul class="footer-links">
+          <li><a href="#calculadora">Calculadora de Ahorro y Ayudas</a></li>
+          <li><a href="#orientador">Orientador en 3 Pasos</a></li>
+          <li><a href="#servicios">Programa de Respiro Familiar</a></li>
+          <li><a href="#servicios">Accesibilidad y Hogar</a></li>
+          <li><a href="#servicios">Atención Psicológica Cuidadores</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col contact-col">
+        <h4>Contacto Directo</h4>
+        <p><i data-lucide="map-pin"></i> <span id="footer-address-label">Calle de la Solidaridad 24, 28010 Madrid</span></p>
+        <p><i data-lucide="phone"></i> <strong id="footer-phone-label">900 100 200</strong> (Gratuito)</p>
+        <p><i data-lucide="message-square"></i> WhatsApp: <strong>600 000 000</strong></p>
+        <p><i data-lucide="mail"></i> ayuda@apoyofamilias.org</p>
+        <div class="badge-accessible-footer">
+          <i data-lucide="check-circle-2"></i> Pautas WCAG 2.1 AA & UNE 153101 Lectura Fácil
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container footer-bottom-flex">
+        <p>&copy; 2026 ApoyoFamilias. Todos los derechos reservados.</p>
+        <div class="footer-legal-links">
+          <a href="#">Aviso Legal</a>
+          <a href="#">Política de Privacidad</a>
+          <a href="#">Declaración de Accesibilidad</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
